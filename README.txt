@@ -8,7 +8,7 @@ Drop how you’re feeling, and Miso gives you a one-liner that feels warm, smart
 ---
 
 **Link to try it:**  
-👉 [https://miso-affirmation-cat.streamlit.app](https://miso-affirmation-cat.streamlit.app)
+👉 [https://miso-affirmation-cat.streamlit.app/)
 
 ---
 
