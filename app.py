@@ -43,7 +43,7 @@ st.markdown(f"""
 
     html, body, h1, h2, h3, .stMarkdown, .stTextInput, .stSubheader {{
         font-family: 'WinkyRough', cursive !important;
-        # background: linear-gradient(145deg, #fff1f8, #e6f6ff);
+        background: linear-gradient(145deg, #fff1f8, #e6f6ff);
         color: #4b244a;
     }}
 
