@@ -1,6 +1,7 @@
 import streamlit as st
 from transformers import GPT2LMHeadModel, GPT2Tokenizer, AutoTokenizer, AutoModelForSequenceClassification
 from streamlit_lottie import st_lottie
+
 import openai
 
 import torch
@@ -147,12 +148,12 @@ def generate_local_affirmation(emotion):
 
 def generate_affirmation(name, emotion, tone_prefix):
     prompt = (
-        f"{tone_prefix} Your friend {name} is feeling {emotion}. "
-        f"Respond with a comforting one-liner as Miso the Affirmation Cat: sassy, smart, and warm (but not cringey)."
+        f"{tone_prefix} Your friend {name} is feeling {emotion}."
+        " Respond with a comforting one-liner as Miso the Affirmation Cat: sassy, smart, and warm (but not cringey)."
     )
 
     try:
-        response = client.chat.completions.create(
+        response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "You are Miso, a cat that gives smart, witty, kind affirmations."},
@@ -164,30 +165,8 @@ def generate_affirmation(name, emotion, tone_prefix):
         return response.choices[0].message.content.strip()
 
     except Exception as e:
-        st.warning("⚠️ OpenAI quota exceeded or error occurred. Falling back to local Miso 😿")
-
-        # 🐱 Local fallback using GPT-2
-        fallback_prompt = (
-            f"You are Miso, a sassy cat giving a pep talk. A human is feeling {emotion}. "
-            f"Write one clever, supportive sentence. Be warm, short, and witty."
-        )
-        inputs = tokenizer.encode(fallback_prompt, return_tensors="pt")
-        outputs = gpt2_model.generate(
-            inputs,
-            max_new_tokens=30,
-            do_sample=True,
-            temperature=1.0,
-            top_k=40,
-            top_p=0.95,
-            no_repeat_ngram_size=2,
-            pad_token_id=tokenizer.eos_token_id,
-            eos_token_id=tokenizer.eos_token_id
-        )
-
-        response = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        response = response.replace(fallback_prompt, "").strip()
-        cleaned = response.split(".")[0].strip() + "."
-        return cleaned
+        st.warning("⚠️ OpenAI quota exceeded or an error occurred. Please try again later!")
+        return "Miso says: I'm taking a little nap right now. Try again in a moment!"
 
 # --- UI ---
 st.title("🐾 Miso the Affirmation Cat")
